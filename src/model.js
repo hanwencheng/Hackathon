@@ -1,7 +1,6 @@
 const _ = require('lodash')
 const {
   getCurrentPrice,
-  getCurrentTime,
   getMaxDelay,
   getPenaltyRation
 } = require('./dataFetcher')
@@ -24,12 +23,12 @@ const calculateBidWhenFailure = (totalCost, sum_payment, sum_successful, sum_pen
   return (restPart - 1) * (sum_successful + 1) / sum_penalty
 };
 
-const oneTime = (parentSumPayment = 0, parentSumSuccess = 0, parentSumFailure = 0) => {
+const oneTime = (startTime = 0, parentSumPayment = 0, parentSumSuccess = 0, parentSumFailure = 0) => {
   
   let resultList = [];
   
   for (let j = 0; j < getMaxDelay(); j++) {
-    const currentTime = getCurrentTime() + j;
+    const currentTime = startTime + j;
     const currentPrice = getCurrentPrice(currentTime);
     const sumPenalty = parentSumFailure * getPenaltyRation();
     const successCost = calculateTotalCostSuccess(parentSumPayment, parentSumSuccess, currentPrice, sumPenalty);
